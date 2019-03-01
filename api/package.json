@@ -1,0 +1,25 @@
+{
+  "name": "api-template",
+  "main": "server.js",
+  "version": "1.0.0",
+  "author": "The one and only Lukas Fucking Vollmer",
+  "license": "MIT",
+  "scripts": {
+    "test": "NODE_ENV=test mocha src/**/*.test-*.js --exit",
+    "coverage": "nyc npm test"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^3.0.1",
+    "express": "^4.16.4",
+    "morgan": "^1.7.0",
+    "randomstring": "^1.1.5",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
+  }
+}

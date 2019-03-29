@@ -1,0 +1,22 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build',
+           '--build-arg',
+           'STARTCODE=${_STARTCODE}',
+           '--build-arg',
+           'TOKEN=${_TOKEN}',
+           '--build-arg',
+           'GIT=${_GIT}',
+           '--build-arg',
+           'BUILDCODE=${_BUILDCODE}',
+           '-t',
+           'gcr.io/${PROJECT_ID}/${_IMAGENAME}',
+           '.']
+images:
+  - 'gcr.io/${PROJECT_ID}/${_IMAGENAME}'
+substitutions:
+  _STARTCODE: null
+  _TOKEN: null
+  _GIT: null
+  _BUILDCODE: null
+  _IMAGENAME: null

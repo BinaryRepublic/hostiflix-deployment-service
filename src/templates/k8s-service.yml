@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {deploymentId}
+spec:
+  selector:
+    app: {deploymentId}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {port}

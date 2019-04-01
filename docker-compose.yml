@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  deployment-service:
+    image: deployment-service
+    container_name: deployment-service
+    build: .
+    ports:
+      - 3000:3000
+    env_file: google-credentials.env
+    environment:
+      - API_BASE_URL=http://localhost:8080

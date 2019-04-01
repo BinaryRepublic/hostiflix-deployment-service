@@ -1,0 +1,75 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  push_to_gcr:
+
+    docker:
+      - image: turbinelabs/gcloud-build:0.12.4
+
+    steps:
+      - run: openrc boot
+      - attach_workspace:
+          at: .
+      - setup_remote_docker
+      - run:
+          name: build from dockerfile
+          command: |
+            docker build -t eu.gcr.io/${GCLOUD_PROJECT_ID}/deployment-service .
+            docker tag eu.gcr.io/${GCLOUD_PROJECT_ID}/deployment-service eu.gcr.io/${GCLOUD_PROJECT_ID}/deployment-service:$CIRCLE_SHA1
+      - run:
+          name: push to gcr
+          command: |
+            gcloud docker -- push eu.gcr.io/${GCLOUD_PROJECT_ID}/deployment-service:$CIRCLE_SHA1
+
+  deploy_to_k8s:
+
+    docker:
+      - image: turbinelabs/gcloud-build:0.12.4
+
+    steps:
+      - run: openrc boot
+      - deploy:
+          name: deploy to kubernetes
+          command: |
+            kubectl set image deployment/deployment-service deployment-service=eu.gcr.io/${GCLOUD_PROJECT_ID}/deployment-service:$CIRCLE_SHA1
+            kubectl rollout status deployment/deployment-service
+
+
+workflows:
+  version: 2
+  build_and_push_to_gcr_and_deploy:
+    jobs:
+      - build
+      - push_to_gcr:
+          requires:
+            - build
+#              filters:
+#                branches:
+#                  only: master
+      - deploy_to_k8s:
+          requires:
+            - push_to_gcr
+#        filters:
+#          branches:
+#            only: master

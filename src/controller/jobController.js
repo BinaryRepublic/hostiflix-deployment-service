@@ -23,19 +23,14 @@ const runBuildAndDeployJob = (req, res, next) => {
         startCode,
         buildCode,
         token,
-        projectId,
-        projectHash,
-        gitRepo,
-        gitBranch
+        subDomain,
+        gitRepo
     } = req.body;
 
     const template = 'nodejs';
     const templateUrl = `templates/${template}`;
     const jobId = uuidv4();
-    const normalizedBranch = gitBranch.replace(/[^a-zA-Z0-9]/g, '-');
-    const shortProjectId = projectId.split('-')[0];
-    const image = `${template}-${shortProjectId}-${normalizedBranch}:${jobId}`;
-    const subDomain = `${normalizedBranch}-${projectHash}`;
+    const image = `${template}-${subDomain}:${jobId}`;
 
     submitToGoogleCloudBuildJob(
         templateUrl,
@@ -46,7 +41,7 @@ const runBuildAndDeployJob = (req, res, next) => {
         startCode
     ).then(() => {
         updateJobStatus(jobId, DEPLOYMENT_PENDING);
-        const deploymentId = `${normalizedBranch}-${shortProjectId}`;
+        const deploymentId = subDomain;
         const port = 3000; // TODO: automatic port detection
 
         deployToKubernetes(image, deploymentId, port, subDomain).then(() => {

@@ -1,14 +1,18 @@
-FROM turbinelabs/gcloud-build:latest
+FROM turbinelabs/gcloud-build:0.19.0
+RUN gcloud components update
 
-WORKDIR /usr/src/app
-COPY /api /usr/src/app
 # Install nodeJS and NPM
 RUN apk update && \
     apk add --update nodejs  && \
     npm install newman --global
 
-RUN npm install
-RUN gcloud components update
-EXPOSE 3003
+WORKDIR /usr/src/app
 
-CMD ["./build.sh"]
+COPY entrypoint.sh entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+COPY src .
+COPY package.json package.json
+
+RUN npm install
+CMD ["./entrypoint.sh"]

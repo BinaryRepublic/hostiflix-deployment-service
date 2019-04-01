@@ -1,0 +1,13 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {deploymentId}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {deploymentId}
+    spec:
+      containers:
+        - name: {deploymentId}
+          image: {image}

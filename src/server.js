@@ -5,14 +5,16 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 // Logging
 const morgan = require('morgan');
 const logger = require('./logger');
 
 // Config
-const config = require('config');
+const config = {
+    port: process.env.PORT || 3000
+};
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -28,8 +30,8 @@ app.use(morgan('short', { stream: logger.stream }));
 app.use('/', routes);
 
 // Start the API
-app.listen(config.apiPort);
-logger.log('info', `api running on port ${config.apiPort}`);
+app.listen(config.port);
+logger.log('info', `api running on port ${config.port}`);
 
 // Export API server for testing
 module.exports = app;

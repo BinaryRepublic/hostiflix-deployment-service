@@ -56,10 +56,8 @@ const runBuildAndDeployJob = (req, res, next) => {
     });
 
     res.status(202).json({
-        job: {
-            status: BUILD_SCHEDULED,
-            id: jobId
-        }
+        status: BUILD_SCHEDULED,
+        id: jobId
     });
 };
 

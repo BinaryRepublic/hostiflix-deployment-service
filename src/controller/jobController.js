@@ -41,7 +41,7 @@ const runBuildAndDeployJob = (req, res, next) => {
         startCode
     ).then(() => {
         updateJobStatus(jobId, DEPLOYMENT_PENDING);
-        const deploymentId = subDomain;
+        const deploymentId = subDomain.replace(/\./g, "-");
         const port = 3000; // TODO: automatic port detection
 
         deployToKubernetes(image, deploymentId, port, subDomain).then(() => {

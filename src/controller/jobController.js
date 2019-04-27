@@ -45,7 +45,9 @@ const runBuildAndDeployJob = (req, res, next) => {
         const port = 3000; // TODO: automatic port detection
 
         deployToKubernetes(image, deploymentId, port, subDomain).then(() => {
-            updateJobStatus(jobId, DEPLOYMENT_SUCCESSFUL);
+            setTimeout(() => {
+                updateJobStatus(jobId, DEPLOYMENT_SUCCESSFUL);
+            }, 20000);
         }).catch(err => {
             updateJobStatus(jobId, DEPLOYMENT_FAILED);
             logError(err);

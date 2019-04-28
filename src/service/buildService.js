@@ -4,6 +4,7 @@ exports.submitToGoogleCloudBuildJob = (
     templateUrl,
     token,
     gitRepo,
+    branch,
     image,
     buildCode,
     startCode
@@ -12,7 +13,7 @@ exports.submitToGoogleCloudBuildJob = (
         const gCloudBuildCommand =
             `gcloud builds submit \\
             --config ${templateUrl}/cloudbuild.yml \\
-            --substitutions _IMAGENAME="${image}",_STARTCODE="${startCode}",_TOKEN="${token}",_GIT="${gitRepo}",_BUILDCODE="${buildCode}" \\
+            --substitutions _IMAGENAME="${image}",_STARTCODE="${startCode}",_TOKEN="${token}",_GIT="${gitRepo}",_BRANCH="${branch}",_BUILDCODE="${buildCode}" \\
             ${templateUrl}`;
 
         exec(gCloudBuildCommand, err => {

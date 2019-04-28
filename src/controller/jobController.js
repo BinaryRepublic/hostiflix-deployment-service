@@ -24,7 +24,8 @@ const runBuildAndDeployJob = (req, res, next) => {
         buildCode,
         token,
         subDomain,
-        gitRepo
+        gitRepo,
+        branch
     } = req.body;
 
     const template = 'nodejs';
@@ -36,6 +37,7 @@ const runBuildAndDeployJob = (req, res, next) => {
         templateUrl,
         token,
         gitRepo,
+        branch,
         image,
         buildCode,
         startCode

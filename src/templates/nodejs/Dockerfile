@@ -2,6 +2,7 @@ FROM node:alpine
 ARG STARTCODE
 ARG TOKEN
 ARG GIT
+ARG BRANCH
 ARG BUILDCODE
 WORKDIR /usr/src/app
 
@@ -10,6 +11,6 @@ RUN echo ${STARTCODE} >> run.sh
 RUN chmod +x run.sh
 RUN apk add --no-cache git
 RUN git init
-RUN git pull https://${TOKEN}@${GIT}
+RUN git pull https://${TOKEN}@${GIT} ${BRANCH}
 RUN ${BUILDCODE}
 CMD ["./run.sh"]

@@ -8,6 +8,8 @@ steps:
            '--build-arg',
            'GIT=${_GIT}',
            '--build-arg',
+           'BRANCH=${_BRANCH}',
+           '--build-arg',
            'BUILDCODE=${_BUILDCODE}',
            '-t',
            'gcr.io/${PROJECT_ID}/${_IMAGENAME}',
@@ -18,5 +20,6 @@ substitutions:
   _STARTCODE: null
   _TOKEN: null
   _GIT: null
+  _BRANCH: null
   _BUILDCODE: null
   _IMAGENAME: null

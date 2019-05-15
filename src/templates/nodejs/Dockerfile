@@ -12,5 +12,6 @@ RUN chmod +x run.sh
 RUN apk add --no-cache git
 RUN git init
 RUN git pull https://${TOKEN}@${GIT} ${BRANCH}
+RUN npm install
 RUN ${BUILDCODE}
 CMD ["./run.sh"]
